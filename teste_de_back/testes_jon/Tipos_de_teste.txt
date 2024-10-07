@@ -103,3 +103,6 @@ os testes são:
 2) Não deve registrar um usuário sem o email.
 3) Não deve registrar um usuário sem os dados.
 4) Deve logar corretamente.
+
+
+

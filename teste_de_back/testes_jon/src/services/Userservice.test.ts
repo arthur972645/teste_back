@@ -30,12 +30,11 @@ describe("Testando User service", () => {
     )) as UserInstance;
     expect(newUser).toBeInstanceOf(Error);
   });
-
   it("deve encontrar um usuario pelo email", async () => {
     const user = (await UserService.findByEmail(email)) as UserInstance;
     expect(user.email).toBe(email);
   });
-  it("Deve combinar com a senha do banco de dados", async () => {
+  it("Deve não combinar com a senha do banco de dados", async () => {
     const user = (await UserService.findByEmail(email)) as UserInstance;
     const match = await UserService.matchPassword("invalid", user.password);
     expect(match).toBeFalsy();
