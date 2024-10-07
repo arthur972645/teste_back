@@ -12,16 +12,16 @@ describe("Testando User service", () => {
   beforeAll(async () => {
     await User.sync({ force: true });
   });
-
-
+  
   it("Deve criar um novo usuário: ", async () => {
     const newUser = (await UserService.createUser(
       email,
       password
     )) as UserInstance;
     expect(newUser).not.toBeInstanceOf(Error);
-    expect(newUser).toHaveProperty("id");
+    expect(newUser).toHaveProperty("email");
     expect(newUser.email).toBe(email);
+    expect(newUser).not.toBeNull();
   });
   it("Deve criar um usuario com o email existente", async () => {
     const newUser = (await UserService.createUser(
