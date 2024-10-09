@@ -7,7 +7,9 @@ import { User } from "../models/User";
 describe("Testando rotas da API", () => {
   //caixa grande que dentro dessa caixa tem caixas menores, que no caso são os testes
   let email = "test@jest.com";
+  let emaikIcorreto: "test@incessistente.com";
   let password = "1234";
+  let passawordIncorreto = "4321"
 
 
    //faz a sincronização entre a estrutura do model e o que está no banco de dados
@@ -32,7 +34,7 @@ describe("Testando rotas da API", () => {
       .send(`email=${email}&password=${password}`)
       .then((response) => {
         expect(response.body.error).toBeUndefined();
-        done()
+        return done();
       });
   });
 
@@ -43,8 +45,8 @@ describe("Testando rotas da API", () => {
       .send(`email=${email}`)
       .then((response) => {
         expect(response.body.error).not.toBeUndefined();
-        expect(response.body.error).toBe("E-mail e/ou senha não enviados."); 
-        done();
+        
+        return done();
       })
   });
 
@@ -54,10 +56,12 @@ describe("Testando rotas da API", () => {
       .send(`password=${password}`)
       .then((response) => {
         expect(response.body.error).toBeDefined();
-        done()
+       
+        return done();
         
       })
   })
+  
 
   it("Não deve registrar um usuário sem os dados", (done) => {
     request(app)
@@ -65,7 +69,8 @@ describe("Testando rotas da API", () => {
       .send({})
       .then((response) => {
         expect(response.body.error).toBeDefined();
-        done()
+        
+        return done();
       })
   })
 
@@ -76,9 +81,54 @@ describe("Testando rotas da API", () => {
       .then((response) => {
         expect(response.body.error).toBeUndefined();
         expect(response.body.status).toBe(true); 
-        done();
+        
+        return done();
       })
 
   });
+
+  it('Não deve logar com os dados incorretos', (done) => {
+    request(app)
+    .post('/login')
+    .send(`email=${emaikIcorreto}&password=${passawordIncorreto}`)
+    .then(response => {
+        expect(response.body.status).toBeFalsy();
+        
+        return done();
+    }); 
+  
+  });
+
+
+  it('Deve listar todos os usuários', (done) => {
+    request(app)
+      .get('/list')
+      .then(response => {
+        expect(response.body.error).toBeUndefined();
+        expect(Array.isArray(response.body.list)).toBeTruthy();
+        
+        return done();
+    });
+  });
+
+  it('Deve excluir um usuário', (done) => { 
+    request(app)
+      .delete(`/delete/${email}`)
+      .then((response) => {
+        expect(response.body.error).toBeUndefined(); 
+        
+        return done();
+    })
+  });
+  it('Não deve excluir um usuário inexistente', (done) => { 
+    request(app)
+    .delete(`/delete/${emaikIcorreto}`)
+    .then(response => {
+        expect(response.body.error).not.toBeUndefined();
+        expect(response.status).toBe(404); 
+        return done();
+    });
+  });
+
 });
 

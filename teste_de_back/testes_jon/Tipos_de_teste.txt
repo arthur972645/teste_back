@@ -95,14 +95,5 @@ expect(10).toBeGreaterThanOrEqual(5);
 
 
 
-Bom dia desenrolados e desenroladas, como conversado semana passada, hoje vocês vão fazer a primeira parte da prova pratica e a segunda será na quarta feira (09/10), para essa primeira parte vocês deverão usar o Jest e o Supertest, utilizando a API que usamos em sala.
-
-os testes são: 
-
-1) Não deve registrar um usuário sem a senha.
-2) Não deve registrar um usuário sem o email.
-3) Não deve registrar um usuário sem os dados.
-4) Deve logar corretamente.
-
 
 
